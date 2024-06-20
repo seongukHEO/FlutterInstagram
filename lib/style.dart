@@ -10,7 +10,7 @@ var theme = ThemeData(
         titleTextStyle: TextStyle(color: Colors.black, fontSize: 25),
         actionsIconTheme: IconThemeData(color: Colors.black)),
     textTheme: TextTheme(
-        bodyMedium: TextStyle(color: Colors.red)
+        bodyMedium: TextStyle(color: Colors.black)
     )
 
 );
