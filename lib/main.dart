@@ -28,22 +28,11 @@ class MyApp extends StatelessWidget {
         ],
       ),
       body: Text('안녕'),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-                onPressed: (){},
-                icon: Icon(Icons.home_outlined),
-                iconSize: 30,
-            ),
-            IconButton(
-                onPressed: (){},
-                icon: Icon(Icons.shopping_bag_outlined),
-                iconSize: 30,
-            )
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: '홈'),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_bag_outlined), label: '샵')
+        ],
       ),
     );
   }
