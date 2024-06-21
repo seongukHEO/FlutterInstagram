@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:instagramflutter/style.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/rendering.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -35,6 +36,13 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  //자식에서 만든 data를 추가해주는 메서드
+  addData(a){
+    setState(() {
+      data.add(a);
+    });
+  }
+
 
 
   //안드로이드의 init 즉 MyApp이 로드될때 바로 인스턴스에 올라간다
@@ -59,7 +67,7 @@ class _MyAppState extends State<MyApp> {
           )
         ],
       ),
-      body: [Home(data : data), Text("샵페이지")][tab],
+      body: [Home(data : data, addData : addData), Text("샵페이지")][tab],
       bottomNavigationBar: BottomNavigationBar(
         //여기서 i는 순서값이다
         onTap: (i){
@@ -77,22 +85,51 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class Home extends StatelessWidget {
-  Home({Key? key, this.data}) : super(key: key);
+class Home extends StatefulWidget {
+  Home({Key? key, this.data, this.addData}) : super(key: key);
   final data;
+  final addData;
+
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+
+  var scroll = ScrollController();
+
+  getExtraData()async {
+    var result = await http.get(Uri.parse('https://codingapple1.github.io/app/more1.json'));
+    var result2 = jsonDecode(result.body);
+    widget.addData(result2);
+
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //사용자가 얼마나 화면을 스크롤 했는지 알 수 있다
+    scroll.addListener((){
+      //유저가 스크롤을 맨 밑까지 했는지 확인하는 코드
+      if(scroll.position.pixels == scroll.position.maxScrollExtent){
+        getExtraData();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     //즉 데이터가 들어오면 밑의 코드를 실행한다!
-    if(data.isNotEmpty){
-      return ListView.builder(itemCount:3, itemBuilder: (c, i){
+    if(widget.data.isNotEmpty){
+      return ListView.builder(itemCount:4, controller: scroll ,itemBuilder: (c, i){
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(data[i]['image']),
-            Text("좋아요 ${data[i]['likes']}"),
-            Text(data[i]['user']),
-            Text(data[i]['content'])
+            Image.network(widget.data[i]['image']),
+            Text("좋아요 ${widget.data[i]['likes']}"),
+            Text(widget.data[i]['user']),
+            Text(widget.data[i]['content'])
           ],
         );
       });
