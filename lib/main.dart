@@ -22,13 +22,17 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   var tab = 0;
+  var data = [];
 
 
   getData() async{
     var result = await http.get(Uri.parse('https://codingapple1.github.io/app/data.json'));
     //jsonDecode는 받아온 데이터를 리스트 형태로 만들어준다
     var result2 = jsonDecode(result.body);
-    print(result2[0]['likes']);
+    print(result2[0]);
+    setState(() {
+      data = result2;
+    });
   }
 
 
@@ -55,7 +59,7 @@ class _MyAppState extends State<MyApp> {
           )
         ],
       ),
-      body: [Home(), Text("샵페이지")][tab],
+      body: [Home(data : data), Text("샵페이지")][tab],
       bottomNavigationBar: BottomNavigationBar(
         //여기서 i는 순서값이다
         onTap: (i){
@@ -74,20 +78,27 @@ class _MyAppState extends State<MyApp> {
 }
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  Home({Key? key, this.data}) : super(key: key);
+  final data;
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(itemCount:3, itemBuilder: (c, i){
-      return Column(
-        children: [
-          Image.network("https://codingapple1.github.io/app/car0.png"),
-          Text("좋아요 100"),
-          Text("글쓴이"),
-          Text("글내용")
-        ],
-      );
-    });
+    //즉 데이터가 들어오면 밑의 코드를 실행한다!
+    if(data.isNotEmpty){
+      return ListView.builder(itemCount:3, itemBuilder: (c, i){
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.network(data[i]['image']),
+            Text("좋아요 ${data[i]['likes']}"),
+            Text(data[i]['user']),
+            Text(data[i]['content'])
+          ],
+        );
+      });
+    }else{
+      return Text('로딩중');
+    }
   }
 }
 
