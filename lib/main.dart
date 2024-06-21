@@ -61,7 +61,11 @@ class _MyAppState extends State<MyApp> {
         title: Text("Instagram"),
         actions: [
           IconButton(
-              onPressed: (){},
+              onPressed: (){
+                Navigator.push(context,
+                MaterialPageRoute(builder: (c){return Upload();})
+                );
+              },
               icon: Icon(Icons.add_box_outlined),
               iconSize: 30,
           )
@@ -122,7 +126,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     //즉 데이터가 들어오면 밑의 코드를 실행한다!
     if(widget.data.isNotEmpty){
-      return ListView.builder(itemCount:4, controller: scroll ,itemBuilder: (c, i){
+      return ListView.builder(itemCount:3, controller: scroll ,itemBuilder: (c, i){
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -138,4 +142,22 @@ class _HomeState extends State<Home> {
     }
   }
 }
+
+class Upload extends StatelessWidget {
+  const Upload({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('이미지 업로드 화면'),
+        ],
+      ),
+    );
+  }
+}
+
 
