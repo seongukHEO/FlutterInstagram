@@ -28,6 +28,30 @@ class _MyAppState extends State<MyApp> {
   var tab = 0;
   var data = [];
   var userImg;
+  //유저가 입력한 글
+  var userContent;
+
+  addMyData(){
+    var myData = {
+      'id': data.length,
+      'image': userImg,
+      'likes' : 5,
+      'date' : 'July 25',
+      'content' : userContent,
+      'liked' : false,
+      'user' : 'seongukHeo'
+    };
+    setState(() {
+      //몇 번째 항목에 추가를 시킬지 지정 가능
+      data.insert(0, myData);
+    });
+  }
+
+  setUserContent(a){
+    setState(() {
+      userContent = a;
+    });
+  }
 
 
   getData() async{
@@ -75,7 +99,12 @@ class _MyAppState extends State<MyApp> {
                 }
 
                 Navigator.push(context,
-                MaterialPageRoute(builder: (c){return upload.Upload(userImg : userImg);})
+                MaterialPageRoute(builder: (c){return upload.Upload(
+                  userImg : userImg,
+                  userContent : userContent,
+                  addMyData : addMyData,
+                );
+                })
                 );
               },
               icon: Icon(Icons.add_box_outlined),
@@ -138,11 +167,13 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     //즉 데이터가 들어오면 밑의 코드를 실행한다!
     if(widget.data.isNotEmpty){
-      return ListView.builder(itemCount:3, controller: scroll ,itemBuilder: (c, i){
+      return ListView.builder(itemCount:widget.data.length, controller: scroll ,itemBuilder: (c, i){
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(widget.data[i]['image']),
+            widget.data[i]['image'].runtimeType == String
+               ? Image.network(widget.data[i]['image'])
+               : Image.file(widget.data[i]['image']),
             Text("좋아요 ${widget.data[i]['likes']}"),
             Text(widget.data[i]['user']),
             Text(widget.data[i]['content'])
