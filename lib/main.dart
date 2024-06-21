@@ -3,6 +3,7 @@ import 'package:instagramflutter/style.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/rendering.dart';
+import 'upload.dart' as upload;
 
 void main() {
   runApp(MaterialApp(
@@ -63,7 +64,7 @@ class _MyAppState extends State<MyApp> {
           IconButton(
               onPressed: (){
                 Navigator.push(context,
-                MaterialPageRoute(builder: (c){return Upload();})
+                MaterialPageRoute(builder: (c){return upload.Upload();})
                 );
               },
               icon: Icon(Icons.add_box_outlined),
@@ -143,21 +144,5 @@ class _HomeState extends State<Home> {
   }
 }
 
-class Upload extends StatelessWidget {
-  const Upload({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('이미지 업로드 화면'),
-        ],
-      ),
-    );
-  }
-}
 
 
