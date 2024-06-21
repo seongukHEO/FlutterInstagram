@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/rendering.dart';
 import 'upload.dart' as upload;
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 void main() {
   runApp(MaterialApp(
@@ -25,6 +27,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   var tab = 0;
   var data = [];
+  var userImg;
 
 
   getData() async{
@@ -62,9 +65,17 @@ class _MyAppState extends State<MyApp> {
         title: Text("Instagram"),
         actions: [
           IconButton(
-              onPressed: (){
+              onPressed: () async {
+                var picker = ImagePicker();
+                var image = await picker.pickImage(source: ImageSource.gallery);
+                if(image != null){
+                  setState(() {
+                    userImg = File(image.path);
+                  });
+                }
+
                 Navigator.push(context,
-                MaterialPageRoute(builder: (c){return upload.Upload();})
+                MaterialPageRoute(builder: (c){return upload.Upload(userImg : userImg);})
                 );
               },
               icon: Icon(Icons.add_box_outlined),
