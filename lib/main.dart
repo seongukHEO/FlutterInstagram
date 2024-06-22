@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instagramflutter/style.dart';
 import 'package:http/http.dart' as http;
@@ -7,6 +8,7 @@ import 'upload.dart' as upload;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'profile.dart' as profile;
 
 void main() {
   runApp(MaterialApp(
@@ -184,7 +186,14 @@ class _HomeState extends State<Home> {
                ? Image.network(widget.data[i]['image'])
                : Image.file(widget.data[i]['image']),
             Text("좋아요 ${widget.data[i]['likes']}"),
-            Text(widget.data[i]['user']),
+            GestureDetector(
+              child: Text(widget.data[i]['user']),
+              onTap: (){
+                Navigator.push(context,
+                  CupertinoPageRoute(builder: (c) => profile.Profile())
+                );
+              },
+            ),
             Text(widget.data[i]['content'])
           ],
         );
