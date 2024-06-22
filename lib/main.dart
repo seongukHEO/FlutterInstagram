@@ -150,16 +150,27 @@ class _MyAppState extends State<MyApp> {
 class Store1 extends ChangeNotifier{
   var name = 'seonguk Heo';
   var follower = 0;
+  var friend = false;
+  
+  var profileImg = [];
+  
+  getData() async {
+    var result = await http.get(Uri.parse('https://codingapple1.github.io/app//profile.json'));
+    var result2 = jsonDecode(result.body);
+    profileImg = result2;
+    notifyListeners();
 
-  //이름을 바꾸기 위한 함수를 만들어준다
-  // changeName(){
-  //   name = 'john';
-  //   notifyListeners();
-  // }
+  }
 
   //팔로우 수를 바꾸기 위한 함수
   changeFollower(){
-    follower++;
+    if(friend == false){
+      follower++;
+      friend = true;
+    }else{
+      follower--;
+      friend = false;
+    }
     notifyListeners();
   }
 }

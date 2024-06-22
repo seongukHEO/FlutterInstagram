@@ -18,13 +18,22 @@ class Profile extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Icon(Icons.account_circle),
+            CircleAvatar(
+              radius: 30,
+              backgroundColor: Colors.grey,
+            ),
             Text('팔로워 : ${context.watch<Store1>().follower}명'),
             ElevatedButton(
                 onPressed: (){
                   context.read<Store1>().changeFollower();
                 },
                 child: Text('팔로우')
+            ),
+            ElevatedButton(
+                onPressed: (){
+                  context.read<Store1>().getData();
+                },
+                child: Text('사진 가져오기')
             )
           ],
         ),
