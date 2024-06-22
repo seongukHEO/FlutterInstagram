@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'upload.dart' as upload;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -30,6 +31,13 @@ class _MyAppState extends State<MyApp> {
   var userImg;
   //유저가 입력한 글
   var userContent;
+
+  saveData() async{
+    var storage = await SharedPreferences.getInstance();
+    storage.setString('이름', userContent);
+    var result = storage.get('name');
+    print(result);
+  }
 
   addMyData(){
     var myData = {
@@ -78,6 +86,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    saveData();
     getData();
   }
 
