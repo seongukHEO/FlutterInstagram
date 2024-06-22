@@ -4,6 +4,7 @@ import 'package:instagramflutter/style.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 import 'upload.dart' as upload;
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -11,12 +12,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'profile.dart' as profile;
 
 void main() {
-  runApp(MaterialApp(
-      debugShowCheckedModeBanner: false,
-    //그니까 테마를 따로 정해준다
-    //안드로이드도 이미 만들어져있는 theme를 사용한다
-    theme: theme,
-    home: MyApp())
+  runApp(
+      ChangeNotifierProvider(
+        create: (c) => Store1(),
+        child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+            //그니까 테마를 따로 정해준다
+            //안드로이드도 이미 만들어져있는 theme를 사용한다
+            theme: theme,
+            home: MyApp()),
+      )
   );
 }
 
@@ -140,6 +145,25 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
+//state 보관함
+class Store1 extends ChangeNotifier{
+  var name = 'seonguk Heo';
+  var follower = 0;
+
+  //이름을 바꾸기 위한 함수를 만들어준다
+  // changeName(){
+  //   name = 'john';
+  //   notifyListeners();
+  // }
+
+  //팔로우 수를 바꾸기 위한 함수
+  changeFollower(){
+    follower++;
+    notifyListeners();
+  }
+}
+
 
 class Home extends StatefulWidget {
   Home({Key? key, this.data, this.addData}) : super(key: key);
